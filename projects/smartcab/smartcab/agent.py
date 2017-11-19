@@ -39,6 +39,11 @@ class LearningAgent(Agent):
         # Update epsilon using a decay function of your choice
         # Update additional class parameters as needed
         # If 'testing' is True, set epsilon and alpha to 0
+        if testing:
+            self.epsilon = 0
+            self.alpha = 0
+        else:
+            self.epsilon -= 0.05
 
         return None
 
@@ -62,7 +67,7 @@ class LearningAgent(Agent):
         # With the hand-engineered features, this learning process gets entirely negated.
 
         # Set 'state' as a tuple of relevant data for the agent
-        state = None
+        state = tuple([waypoint, inputs['light'], inputs['left'], inputs['oncoming'], deadline])
 
         return state
 
@@ -91,7 +96,10 @@ class LearningAgent(Agent):
         # If it is not, create a new dictionary for that state
         #   Then, for each action available, set the initial Q-value to 0.0
 
-        return
+        if self.learning is False:
+            return
+        if state not in self.Q:
+            self.Q[state] = {action: 0.0 for action in self.valid_actions}
 
 
     def choose_action(self, state):
@@ -102,10 +110,6 @@ class LearningAgent(Agent):
         self.state = state
         self.next_waypoint = self.planner.next_waypoint()
         action = None
-        if not self.learning:
-            action = random.choice(self.valid_actions)
-        else:
-            pass
 
         ###########
         ## TO DO ##
@@ -114,6 +118,13 @@ class LearningAgent(Agent):
         # When learning, choose a random action with 'epsilon' probability
         # Otherwise, choose an action with the highest Q-value for the current state
         # Be sure that when choosing an action with highest Q-value that you randomly select between actions that "tie".
+
+        if not self.learning:
+            action = random.choice(self.valid_actions)
+        else:
+            # TODO need to implement highest-Q
+            action = random.choice(self.valid_actions)
+
         return action
 
 
@@ -155,7 +166,9 @@ def run():
     #   verbose     - set to True to display additional output from the simulation
     #   num_dummies - discrete number of dummy agents in the environment, default is 100
     #   grid_size   - discrete number of intersections (columns, rows), default is (8, 6)
-    env = Environment()
+    env = Environment(
+                    #   verbose=True
+                     )
 
     ##############
     # Create the driving agent
@@ -163,7 +176,10 @@ def run():
     #   learning   - set to True to force the driving agent to use Q-learning
     #    * epsilon - continuous value for the exploration factor, default is 1
     #    * alpha   - continuous value for the learning rate, default is 0.5
-    agent = env.create_agent(LearningAgent)
+    agent = env.create_agent(LearningAgent,
+                             learning=True,
+                            #  alpha=0.5
+                             )
 
     ##############
     # Follow the driving agent
@@ -178,14 +194,18 @@ def run():
     #   display      - set to False to disable the GUI if PyGame is enabled
     #   log_metrics  - set to True to log trial and simulation results to /logs
     #   optimized    - set to True to change the default log file name
-    sim = Simulator(env, update_delay=1, log_metrics=False, display=False)
+    sim = Simulator(env, update_delay=0.01,
+                    display=False,
+                    log_metrics=True,
+                    optimized=False
+                    )
 
     ##############
     # Run the simulator
     # Flags:
     #   tolerance  - epsilon tolerance before beginning testing, default is 0.05
     #   n_test     - discrete number of testing trials to perform, default is 0
-    sim.run(n_test=0)
+    sim.run(n_test=10)
 
 
 if __name__ == '__main__':
