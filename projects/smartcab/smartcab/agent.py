@@ -1,5 +1,6 @@
 import random
 import math
+from collections import namedtuple
 from environment import Agent, Environment
 from planner import RoutePlanner
 from simulator import Simulator
@@ -67,7 +68,11 @@ class LearningAgent(Agent):
         # With the hand-engineered features, this learning process gets entirely negated.
 
         # Set 'state' as a tuple of relevant data for the agent
-        state = tuple([waypoint, inputs['light'], inputs['left'], inputs['oncoming'], deadline])
+        # state = tuple([waypoint, inputs['light'], inputs['left'], inputs['oncoming']])
+        S = namedtuple('state',
+            ['waypoint', 'light', 'left_traffic', 'comming_traffic'])
+        state = S(
+            waypoint, inputs['light'], inputs['left'], inputs['oncoming'])
 
         return state
 
@@ -142,6 +147,11 @@ class LearningAgent(Agent):
         ###########
         # When learning, implement the value iteration update rule
         #   Use only the learning rate 'alpha' (do not use the discount factor 'gamma')
+
+        if not self.learning:
+            return
+
+        self.Q[state][action] = reward
 
         return
 
