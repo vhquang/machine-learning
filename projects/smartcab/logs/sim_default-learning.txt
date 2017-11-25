@@ -2,483 +2,465 @@
 | State-action rewards from Q-Learning
 \-----------------------------------------
 
-state(waypoint='right', light='red', left_traffic=None, comming_traffic='forward')
- -- None : 0.00
- -- forward : 0.00
- -- right : 2.23
- -- left : -8.59
-
 state(waypoint='right', light='red', left_traffic='forward', comming_traffic=None)
- -- None : 1.70
- -- forward : -39.02
- -- right : -19.69
- -- left : -39.39
-
-state(waypoint='right', light='green', left_traffic=None, comming_traffic=None)
- -- None : -2.62
- -- forward : 0.12
- -- right : 1.44
- -- left : 0.35
-
-state(waypoint='right', light='red', left_traffic=None, comming_traffic='right')
- -- None : 0.68
+ -- None : 1.85
  -- forward : 0.00
  -- right : 0.00
  -- left : 0.00
 
-state(waypoint='left', light='red', left_traffic=None, comming_traffic=None)
- -- None : 2.34
- -- forward : -37.99
- -- right : 1.04
- -- left : -7.47
+state(waypoint='right', light='red', left_traffic='right', comming_traffic='left')
+ -- None : 0.65
+ -- forward : -10.44
+ -- right : 0.00
+ -- left : -10.72
 
-state(waypoint='left', light='green', left_traffic=None, comming_traffic='forward')
+state(waypoint='forward', light='red', left_traffic=None, comming_traffic='left')
+ -- None : 1.92
+ -- forward : -8.94
+ -- right : 0.18
+ -- left : -7.12
+
+state(waypoint='right', light='red', left_traffic=None, comming_traffic='right')
+ -- None : 0.56
+ -- forward : -8.60
+ -- right : 0.00
+ -- left : -39.58
+
+state(waypoint='left', light='red', left_traffic=None, comming_traffic=None)
+ -- None : 2.09
+ -- forward : 0.00
+ -- right : 0.35
+ -- left : -8.30
+
+state(waypoint='left', light='green', left_traffic='forward', comming_traffic=None)
  -- None : 0.00
  -- forward : 0.00
- -- right : 1.28
+ -- right : 0.52
  -- left : 0.00
 
 state(waypoint='left', light='green', left_traffic='forward', comming_traffic='left')
- -- None : 0.00
- -- forward : 0.00
- -- right : 0.00
- -- left : 2.85
-
-state(waypoint='forward', light='red', left_traffic='forward', comming_traffic='right')
- -- None : 2.16
- -- forward : -39.76
+ -- None : -4.77
+ -- forward : 2.22
  -- right : 0.00
  -- left : 0.00
+
+state(waypoint='right', light='green', left_traffic=None, comming_traffic=None)
+ -- None : -3.20
+ -- forward : -0.25
+ -- right : 1.40
+ -- left : 0.27
 
 state(waypoint='right', light='red', left_traffic=None, comming_traffic='left')
- -- None : -0.06
- -- forward : -7.75
- -- right : 2.70
- -- left : -7.43
+ -- None : 1.02
+ -- forward : -8.99
+ -- right : 2.11
+ -- left : -9.59
 
 state(waypoint='left', light='red', left_traffic='right', comming_traffic='left')
- -- None : 2.12
+ -- None : 0.00
+ -- forward : 0.00
+ -- right : 0.72
+ -- left : -10.35
+
+state(waypoint='forward', light='red', left_traffic='forward', comming_traffic='left')
+ -- None : 1.01
  -- forward : 0.00
  -- right : 0.00
  -- left : 0.00
 
-state(waypoint='forward', light='red', left_traffic=None, comming_traffic='left')
- -- None : 1.30
- -- forward : -39.35
- -- right : 0.84
- -- left : -8.62
+state(waypoint='forward', light='green', left_traffic='forward', comming_traffic='left')
+ -- None : -5.94
+ -- forward : 0.00
+ -- right : 0.00
+ -- left : 0.00
 
 state(waypoint='right', light='red', left_traffic='left', comming_traffic=None)
- -- None : 0.00
- -- forward : -8.75
- -- right : 2.82
- -- left : -9.90
-
-state(waypoint='right', light='green', left_traffic='forward', comming_traffic='right')
- -- None : 0.00
- -- forward : 0.00
- -- right : 0.00
- -- left : -20.10
-
-state(waypoint='forward', light='red', left_traffic='left', comming_traffic=None)
- -- None : 2.21
- -- forward : -9.17
- -- right : 0.00
- -- left : 0.00
-
-state(waypoint='forward', light='green', left_traffic='right', comming_traffic='left')
- -- None : -4.55
- -- forward : 0.00
- -- right : 0.00
- -- left : 0.00
-
-state(waypoint='right', light='red', left_traffic='right', comming_traffic=None)
- -- None : 0.42
- -- forward : 0.00
- -- right : 0.00
- -- left : -10.94
-
-state(waypoint='forward', light='red', left_traffic='forward', comming_traffic=None)
- -- None : 1.94
- -- forward : -40.10
- -- right : 0.00
- -- left : 0.00
-
-state(waypoint='forward', light='green', left_traffic=None, comming_traffic='right')
- -- None : -5.07
- -- forward : 2.87
- -- right : 0.74
- -- left : -20.10
-
-state(waypoint='forward', light='green', left_traffic='left', comming_traffic='left')
- -- None : 0.00
- -- forward : 2.57
- -- right : 0.00
- -- left : 0.00
-
-state(waypoint='forward', light='green', left_traffic=None, comming_traffic='left')
- -- None : 0.00
- -- forward : 2.75
- -- right : 0.00
- -- left : 0.89
-
-state(waypoint='right', light='green', left_traffic='left', comming_traffic=None)
- -- None : -3.92
- -- forward : 1.12
- -- right : 1.35
- -- left : 0.00
-
-state(waypoint='forward', light='red', left_traffic='right', comming_traffic=None)
- -- None : 1.81
- -- forward : 0.00
- -- right : 0.56
- -- left : 0.00
-
-state(waypoint='left', light='red', left_traffic=None, comming_traffic='left')
- -- None : 2.02
- -- forward : -9.17
- -- right : 0.00
- -- left : -9.96
-
-state(waypoint='left', light='green', left_traffic='forward', comming_traffic=None)
- -- None : -5.18
- -- forward : 0.00
- -- right : 0.70
- -- left : 1.43
-
-state(waypoint='right', light='green', left_traffic='left', comming_traffic='left')
- -- None : -5.27
- -- forward : 0.00
- -- right : 0.00
- -- left : -0.47
-
-state(waypoint='left', light='red', left_traffic='left', comming_traffic='left')
- -- None : 1.93
- -- forward : 0.00
- -- right : 0.00
- -- left : -10.75
-
-state(waypoint='left', light='green', left_traffic='right', comming_traffic='forward')
- -- None : -4.20
- -- forward : 1.41
- -- right : -0.64
- -- left : 0.00
-
-state(waypoint='left', light='green', left_traffic='forward', comming_traffic='right')
- -- None : 0.00
- -- forward : 0.00
- -- right : 0.95
- -- left : 0.00
-
-state(waypoint='left', light='red', left_traffic='right', comming_traffic=None)
- -- None : 2.67
- -- forward : 0.00
- -- right : 0.00
- -- left : 0.00
-
-state(waypoint='forward', light='red', left_traffic='left', comming_traffic='forward')
- -- None : 1.54
- -- forward : 0.00
- -- right : 0.00
- -- left : 0.00
-
-state(waypoint='right', light='red', left_traffic='left', comming_traffic='right')
- -- None : -0.07
- -- forward : -10.44
- -- right : 0.00
- -- left : 0.00
-
-state(waypoint='forward', light='green', left_traffic='right', comming_traffic=None)
- -- None : -4.03
- -- forward : 1.23
- -- right : 0.00
- -- left : 0.00
-
-state(waypoint='right', light='green', left_traffic=None, comming_traffic='left')
- -- None : -2.99
- -- forward : 0.00
- -- right : 1.33
- -- left : 0.00
-
-state(waypoint='forward', light='green', left_traffic='forward', comming_traffic=None)
- -- None : -3.78
- -- forward : 2.40
- -- right : 0.92
- -- left : 0.02
-
-state(waypoint='right', light='green', left_traffic=None, comming_traffic='right')
- -- None : -4.76
- -- forward : 0.00
- -- right : 0.00
- -- left : 0.00
-
-state(waypoint='right', light='green', left_traffic='right', comming_traffic=None)
- -- None : 0.00
- -- forward : 2.90
- -- right : 2.97
- -- left : 0.00
-
-state(waypoint='forward', light='green', left_traffic='right', comming_traffic='forward')
- -- None : -5.12
- -- forward : 1.92
- -- right : 0.00
- -- left : 0.00
-
-state(waypoint='forward', light='green', left_traffic='left', comming_traffic='forward')
- -- None : 0.00
- -- forward : 2.03
- -- right : 0.00
- -- left : -19.45
-
-state(waypoint='forward', light='green', left_traffic='forward', comming_traffic='right')
- -- None : 0.00
- -- forward : 2.28
+ -- None : 0.87
+ -- forward : -9.39
  -- right : 0.00
  -- left : 0.00
 
 state(waypoint='left', light='green', left_traffic=None, comming_traffic='right')
- -- None : -4.18
+ -- None : -5.97
+ -- forward : 1.45
+ -- right : 0.00
+ -- left : 0.00
+
+state(waypoint='right', light='red', left_traffic=None, comming_traffic='forward')
+ -- None : 1.20
+ -- forward : 0.00
+ -- right : 2.36
+ -- left : 0.00
+
+state(waypoint='right', light='red', left_traffic='right', comming_traffic=None)
+ -- None : 0.73
+ -- forward : -10.65
+ -- right : 0.00
+ -- left : 0.00
+
+state(waypoint='forward', light='red', left_traffic='forward', comming_traffic=None)
+ -- None : 1.26
+ -- forward : -39.45
+ -- right : 0.00
+ -- left : -40.52
+
+state(waypoint='left', light='red', left_traffic='forward', comming_traffic=None)
+ -- None : 2.01
+ -- forward : 0.00
+ -- right : 0.00
+ -- left : -39.39
+
+state(waypoint='forward', light='green', left_traffic='left', comming_traffic='left')
+ -- None : 0.00
+ -- forward : 0.00
+ -- right : 1.07
+ -- left : 0.00
+
+state(waypoint='forward', light='green', left_traffic=None, comming_traffic='left')
+ -- None : -3.43
+ -- forward : 2.03
+ -- right : 0.48
+ -- left : 0.00
+
+state(waypoint='forward', light='red', left_traffic='right', comming_traffic='right')
+ -- None : 0.00
+ -- forward : 0.00
+ -- right : 0.00
+ -- left : -40.44
+
+state(waypoint='right', light='green', left_traffic='right', comming_traffic='left')
+ -- None : -5.08
+ -- forward : 1.08
+ -- right : 0.00
+ -- left : 0.00
+
+state(waypoint='left', light='red', left_traffic=None, comming_traffic='left')
+ -- None : 1.12
+ -- forward : -9.20
+ -- right : 0.00
+ -- left : -8.75
+
+state(waypoint='left', light='green', left_traffic=None, comming_traffic=None)
+ -- None : -4.39
+ -- forward : 0.78
+ -- right : -0.15
+ -- left : 1.27
+
+state(waypoint='left', light='green', left_traffic='forward', comming_traffic='forward')
+ -- None : -4.71
+ -- forward : -0.16
+ -- right : 0.19
+ -- left : 0.00
+
+state(waypoint='right', light='green', left_traffic='left', comming_traffic='left')
+ -- None : -5.51
+ -- forward : 1.44
+ -- right : 0.00
+ -- left : 0.00
+
+state(waypoint='forward', light='green', left_traffic=None, comming_traffic='right')
+ -- None : -4.20
+ -- forward : 2.18
+ -- right : 0.00
+ -- left : 0.00
+
+state(waypoint='left', light='red', left_traffic='left', comming_traffic='left')
+ -- None : 1.82
+ -- forward : -9.23
+ -- right : 0.00
+ -- left : 0.00
+
+state(waypoint='left', light='red', left_traffic='right', comming_traffic=None)
+ -- None : 1.83
+ -- forward : -9.95
+ -- right : 0.00
+ -- left : 0.00
+
+state(waypoint='right', light='green', left_traffic='left', comming_traffic='right')
+ -- None : -5.63
+ -- forward : 0.18
+ -- right : 0.00
+ -- left : 0.00
+
+state(waypoint='forward', light='red', left_traffic='left', comming_traffic='forward')
+ -- None : 1.90
  -- forward : 0.00
  -- right : 0.00
  -- left : 0.00
 
-state(waypoint='right', light='red', left_traffic=None, comming_traffic=None)
- -- None : 0.17
- -- forward : -8.30
- -- right : 1.62
+state(waypoint='left', light='green', left_traffic='right', comming_traffic=None)
+ -- None : 0.00
+ -- forward : 0.58
+ -- right : 0.00
+ -- left : 0.00
+
+state(waypoint='forward', light='green', left_traffic='left', comming_traffic=None)
+ -- None : 0.00
+ -- forward : 0.00
+ -- right : 0.00
+ -- left : 2.02
+
+state(waypoint='left', light='green', left_traffic='left', comming_traffic=None)
+ -- None : -4.79
+ -- forward : -0.07
+ -- right : -0.21
+ -- left : 1.67
+
+state(waypoint='forward', light='red', left_traffic=None, comming_traffic=None)
+ -- None : 0.33
+ -- forward : -38.42
+ -- right : 0.90
+ -- left : -7.63
+
+state(waypoint='forward', light='green', left_traffic='forward', comming_traffic=None)
+ -- None : 0.00
+ -- forward : 0.45
+ -- right : 0.17
+ -- left : 0.84
+
+state(waypoint='right', light='green', left_traffic=None, comming_traffic='right')
+ -- None : -5.65
+ -- forward : 1.43
+ -- right : 0.00
+ -- left : 0.00
+
+state(waypoint='right', light='green', left_traffic=None, comming_traffic='left')
+ -- None : -5.76
+ -- forward : 0.63
+ -- right : 1.58
+ -- left : 1.08
+
+state(waypoint='right', light='green', left_traffic=None, comming_traffic='forward')
+ -- None : -5.70
+ -- forward : 1.88
+ -- right : 0.00
  -- left : 0.00
 
 state(waypoint='left', light='green', left_traffic=None, comming_traffic='left')
- -- None : -4.85
- -- forward : 0.14
- -- right : -0.30
- -- left : 0.00
+ -- None : -2.87
+ -- forward : 0.99
+ -- right : 1.47
+ -- left : 2.37
 
 state(waypoint='right', light='green', left_traffic='forward', comming_traffic=None)
- -- None : -3.37
- -- forward : 2.17
- -- right : 1.16
- -- left : 1.03
+ -- None : -3.71
+ -- forward : 0.76
+ -- right : 2.33
+ -- left : 0.88
 
 state(waypoint='right', light='red', left_traffic='forward', comming_traffic='right')
- -- None : 0.83
+ -- None : 0.31
  -- forward : 0.00
  -- right : 0.00
  -- left : 0.00
 
 state(waypoint='left', light='red', left_traffic=None, comming_traffic='forward')
  -- None : 0.00
- -- forward : -39.99
- -- right : 1.79
- -- left : -9.66
+ -- forward : -8.91
+ -- right : 1.29
+ -- left : -9.10
 
-state(waypoint='left', light='green', left_traffic=None, comming_traffic=None)
- -- None : 0.00
- -- forward : 0.21
- -- right : 0.00
- -- left : 1.43
-
-state(waypoint='left', light='green', left_traffic='left', comming_traffic='right')
- -- None : 0.00
+state(waypoint='left', light='green', left_traffic=None, comming_traffic='forward')
+ -- None : -4.49
  -- forward : 0.00
- -- right : 0.00
- -- left : -19.24
+ -- right : 1.98
+ -- left : 0.00
 
-state(waypoint='left', light='red', left_traffic='forward', comming_traffic=None)
- -- None : 1.46
- -- forward : 0.00
+state(waypoint='forward', light='red', left_traffic=None, comming_traffic='right')
+ -- None : 1.26
+ -- forward : -8.68
  -- right : 0.00
+ -- left : 0.00
+
+state(waypoint='right', light='green', left_traffic='left', comming_traffic=None)
+ -- None : -2.83
+ -- forward : 0.00
+ -- right : 2.06
+ -- left : 0.00
+
+state(waypoint='forward', light='green', left_traffic=None, comming_traffic='forward')
+ -- None : -4.26
+ -- forward : 2.42
+ -- right : -0.22
  -- left : 0.00
 
 state(waypoint='left', light='red', left_traffic='forward', comming_traffic='forward')
- -- None : 0.00
- -- forward : 0.00
- -- right : -19.55
- -- left : -39.12
-
-state(waypoint='forward', light='green', left_traffic=None, comming_traffic='forward')
- -- None : -4.78
- -- forward : 2.14
- -- right : 0.00
- -- left : -18.79
-
-state(waypoint='right', light='green', left_traffic='right', comming_traffic='forward')
- -- None : -5.24
- -- forward : 0.00
- -- right : 0.00
- -- left : 0.00
-
-state(waypoint='left', light='green', left_traffic='left', comming_traffic='forward')
- -- None : -4.95
- -- forward : 1.68
- -- right : 0.00
- -- left : 0.00
-
-state(waypoint='forward', light='red', left_traffic='right', comming_traffic='left')
- -- None : 0.00
- -- forward : -9.73
- -- right : 0.00
- -- left : 0.00
-
-state(waypoint='left', light='green', left_traffic='left', comming_traffic=None)
- -- None : -3.74
- -- forward : 1.17
- -- right : 1.29
- -- left : 0.71
-
-state(waypoint='right', light='red', left_traffic='left', comming_traffic='forward')
- -- None : -0.59
- -- forward : -10.33
- -- right : 0.00
- -- left : 0.00
-
-state(waypoint='forward', light='red', left_traffic=None, comming_traffic=None)
- -- None : 1.44
- -- forward : -8.21
- -- right : 1.04
- -- left : -10.43
-
-state(waypoint='right', light='red', left_traffic='right', comming_traffic='forward')
- -- None : 0.00
- -- forward : 0.00
- -- right : 1.54
- -- left : 0.00
-
-state(waypoint='left', light='red', left_traffic='left', comming_traffic='forward')
  -- None : 2.47
- -- forward : -39.94
+ -- forward : 0.00
  -- right : 0.00
  -- left : 0.00
 
 state(waypoint='left', light='red', left_traffic=None, comming_traffic='right')
- -- None : 2.77
- -- forward : -9.35
- -- right : 0.00
- -- left : 0.00
-
-state(waypoint='left', light='red', left_traffic='forward', comming_traffic='right')
- -- None : 1.67
+ -- None : 1.15
  -- forward : 0.00
  -- right : 0.00
  -- left : 0.00
 
-state(waypoint='right', light='green', left_traffic='forward', comming_traffic='left')
- -- None : -5.09
- -- forward : -0.34
+state(waypoint='right', light='green', left_traffic='right', comming_traffic='forward')
+ -- None : -5.92
+ -- forward : 0.00
  -- right : 0.00
  -- left : 0.00
 
-state(waypoint='forward', light='green', left_traffic='forward', comming_traffic='left')
+state(waypoint='forward', light='red', left_traffic='right', comming_traffic=None)
+ -- None : 1.86
+ -- forward : -10.21
+ -- right : 0.00
+ -- left : 0.00
+
+state(waypoint='forward', light='red', left_traffic='left', comming_traffic='right')
  -- None : 0.00
  -- forward : 0.00
- -- right : 0.40
+ -- right : 2.09
  -- left : 0.00
 
-state(waypoint='right', light='green', left_traffic='left', comming_traffic='forward')
- -- None : -5.56
+state(waypoint='forward', light='green', left_traffic='right', comming_traffic='left')
+ -- None : -5.10
+ -- forward : 1.33
+ -- right : 0.00
+ -- left : 0.00
+
+state(waypoint='right', light='red', left_traffic=None, comming_traffic=None)
+ -- None : 0.00
+ -- forward : -36.93
+ -- right : 0.67
+ -- left : -8.40
+
+state(waypoint='forward', light='red', left_traffic='right', comming_traffic='left')
+ -- None : 0.94
  -- forward : 0.00
  -- right : 0.00
  -- left : 0.00
 
 state(waypoint='right', light='red', left_traffic='forward', comming_traffic='left')
- -- None : 0.00
- -- forward : -40.37
- -- right : -20.33
+ -- None : 1.96
+ -- forward : -40.20
+ -- right : 0.00
  -- left : 0.00
 
-state(waypoint='left', light='red', left_traffic='forward', comming_traffic='left')
- -- None : 2.52
- -- forward : 0.00
- -- right : -20.37
- -- left : 0.00
-
-state(waypoint='forward', light='red', left_traffic=None, comming_traffic='right')
- -- None : 2.80
+state(waypoint='left', light='red', left_traffic='left', comming_traffic='forward')
+ -- None : 2.11
  -- forward : 0.00
  -- right : 0.00
  -- left : 0.00
 
-state(waypoint='right', light='green', left_traffic='right', comming_traffic='right')
+state(waypoint='left', light='green', left_traffic='right', comming_traffic='right')
  -- None : 0.00
- -- forward : 0.32
+ -- forward : 0.00
+ -- right : 0.87
+ -- left : 0.00
+
+state(waypoint='right', light='green', left_traffic='forward', comming_traffic='forward')
+ -- None : -5.67
+ -- forward : 0.00
+ -- right : 0.00
+ -- left : 0.00
+
+state(waypoint='left', light='red', left_traffic='forward', comming_traffic='right')
+ -- None : 1.82
+ -- forward : 0.00
+ -- right : 0.00
+ -- left : 0.00
+
+state(waypoint='forward', light='green', left_traffic='right', comming_traffic='right')
+ -- None : 0.00
+ -- forward : 0.00
+ -- right : 1.40
+ -- left : 0.00
+
+state(waypoint='forward', light='green', left_traffic='right', comming_traffic=None)
+ -- None : -5.89
+ -- forward : 0.00
+ -- right : 1.92
+ -- left : 0.00
+
+state(waypoint='forward', light='red', left_traffic='right', comming_traffic='forward')
+ -- None : 2.33
+ -- forward : 0.00
+ -- right : 0.00
+ -- left : 0.00
+
+state(waypoint='left', light='red', left_traffic='forward', comming_traffic='left')
+ -- None : 2.64
+ -- forward : -38.25
+ -- right : 0.00
+ -- left : -38.13
+
+state(waypoint='right', light='green', left_traffic='right', comming_traffic='right')
+ -- None : -5.03
+ -- forward : 0.00
  -- right : 0.00
  -- left : 0.00
 
 state(waypoint='forward', light='red', left_traffic='left', comming_traffic='left')
- -- None : 1.53
- -- forward : 0.00
+ -- None : 1.35
+ -- forward : -10.78
  -- right : 0.00
  -- left : 0.00
 
-state(waypoint='right', light='green', left_traffic=None, comming_traffic='forward')
- -- None : -5.65
- -- forward : 0.68
+state(waypoint='forward', light='red', left_traffic='left', comming_traffic=None)
+ -- None : 2.43
+ -- forward : -9.60
  -- right : 0.00
- -- left : 0.00
-
-state(waypoint='left', light='green', left_traffic='right', comming_traffic='left')
- -- None : -5.62
- -- forward : 2.43
- -- right : 0.00
- -- left : 0.00
+ -- left : -9.54
 
 state(waypoint='forward', light='green', left_traffic='forward', comming_traffic='forward')
- -- None : -4.34
- -- forward : 1.09
+ -- None : -5.52
+ -- forward : 0.78
  -- right : 0.00
  -- left : 0.00
 
-state(waypoint='right', light='red', left_traffic='forward', comming_traffic='forward')
- -- None : -0.09
- -- forward : 0.00
+state(waypoint='right', light='red', left_traffic='left', comming_traffic='forward')
+ -- None : 0.00
+ -- forward : -10.93
  -- right : 0.00
  -- left : 0.00
-
-state(waypoint='forward', light='red', left_traffic='forward', comming_traffic='forward')
- -- None : 1.01
- -- forward : 0.00
- -- right : 0.00
- -- left : -40.96
 
 state(waypoint='right', light='red', left_traffic='left', comming_traffic='left')
- -- None : 0.00
- -- forward : 0.00
+ -- None : 0.29
+ -- forward : -9.10
  -- right : 0.00
- -- left : -10.07
+ -- left : 0.00
 
 state(waypoint='forward', light='red', left_traffic=None, comming_traffic='forward')
- -- None : 2.21
- -- forward : 0.00
- -- right : 0.00
- -- left : -8.41
-
-state(waypoint='forward', light='green', left_traffic=None, comming_traffic=None)
- -- None : -4.00
- -- forward : 1.33
- -- right : 0.79
- -- left : 1.01
-
-state(waypoint='forward', light='red', left_traffic='right', comming_traffic='forward')
- -- None : 1.74
- -- forward : 0.00
- -- right : -0.14
- -- left : 0.00
-
-state(waypoint='right', light='green', left_traffic='right', comming_traffic='left')
  -- None : 0.00
  -- forward : 0.00
- -- right : 0.00
- -- left : 0.25
+ -- right : 0.27
+ -- left : -10.34
 
-state(waypoint='forward', light='green', left_traffic='left', comming_traffic=None)
- -- None : -5.46
- -- forward : 0.98
- -- right : 0.55
- -- left : 0.00
+state(waypoint='forward', light='green', left_traffic=None, comming_traffic=None)
+ -- None : -2.86
+ -- forward : 2.06
+ -- right : 1.63
+ -- left : 0.45
 
 state(waypoint='left', light='red', left_traffic='left', comming_traffic=None)
- -- None : 3.41
- -- forward : -7.99
+ -- None : 2.25
+ -- forward : 0.00
  -- right : 0.00
- -- left : -10.76
+ -- left : -10.10
+
+state(waypoint='left', light='red', left_traffic='left', comming_traffic='right')
+ -- None : 0.00
+ -- forward : 0.00
+ -- right : 1.54
+ -- left : 0.00
+
+state(waypoint='right', light='green', left_traffic='forward', comming_traffic='left')
+ -- None : 0.00
+ -- forward : 0.00
+ -- right : 1.01
+ -- left : 0.00
+
+state(waypoint='left', light='green', left_traffic='left', comming_traffic='forward')
+ -- None : -4.76
+ -- forward : 0.00
+ -- right : 0.00
+ -- left : 0.00
+
+state(waypoint='right', light='green', left_traffic='right', comming_traffic=None)
+ -- None : -4.02
+ -- forward : 2.59
+ -- right : 0.00
+ -- left : 0.00
 
