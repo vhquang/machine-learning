@@ -24,6 +24,7 @@ class LearningAgent(Agent):
         ## TO DO ##
         ###########
         # Set any additional class parameters as needed
+        self.total_run = 0
 
 
     def reset(self, destination=None, testing=False):
@@ -44,7 +45,11 @@ class LearningAgent(Agent):
             self.epsilon = 0
             self.alpha = 0
         else:
-            self.epsilon -= 0.05
+            # self.epsilon -= 0.05
+            self.epsilon = self.alpha ** self.total_run
+            self.total_run += 1
+
+        print 'qqq', self.total_run, self.alpha, self.epsilon
 
         return None
 
@@ -192,7 +197,8 @@ def run():
     #    * alpha   - continuous value for the learning rate, default is 0.5
     agent = env.create_agent(LearningAgent,
                              learning=True,
-                            #  alpha=0.5
+                             alpha=0.95,
+                             epsilon=0.9
                              )
 
     ##############
@@ -211,7 +217,7 @@ def run():
     sim = Simulator(env, update_delay=0.01,
                     display=False,
                     log_metrics=True,
-                    optimized=False
+                    optimized=True
                     )
 
     ##############
@@ -219,7 +225,7 @@ def run():
     # Flags:
     #   tolerance  - epsilon tolerance before beginning testing, default is 0.05
     #   n_test     - discrete number of testing trials to perform, default is 0
-    sim.run(n_test=10)
+    sim.run(n_test=50, tolerance=0.05)
 
 
 if __name__ == '__main__':
