@@ -137,8 +137,9 @@ class LearningAgent(Agent):
             if explore < self.epsilon:
                 action = random.choice(self.valid_actions)
             else:
-                actions = sorted(self.Q[state].items(), key=lambda x: x[1], reverse=True)
-                action = actions[0][0]
+                max_val = max(self.Q[state].values())
+                actions = [action for action, value in self.Q[state].items() if value == max_val]
+                action = random.choice(actions)
 
         return action
 
@@ -157,7 +158,10 @@ class LearningAgent(Agent):
         if not self.learning:
             return
 
-        self.Q[state][action] = reward + self.alpha * self.get_maxQ(state)
+        self.Q[state][action] = (
+            (1 - self.alpha) * self.Q[state][action] +
+            self.alpha * (reward + self.get_maxQ(state))
+        )
 
         return
 
