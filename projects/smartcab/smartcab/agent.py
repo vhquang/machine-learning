@@ -48,10 +48,11 @@ class LearningAgent(Agent):
             # self.epsilon -= 0.05
             # self.epsilon = self.alpha ** self.total_run
             # self.epsilon = 1 / (self.total_run ** 2 if self.total_run > 0 else 1)
-            self.epsilon = math.e ** (-self.alpha * self.total_run)
+            # self.epsilon = math.e ** (-self.alpha * self.total_run)
+            self.epsilon = math.cos(self.alpha * self.total_run)
             self.total_run += 1
+            print 'qqq', self.total_run, self.alpha, self.epsilon
 
-        print 'qqq', self.total_run, self.alpha, self.epsilon
 
         return None
 
@@ -199,7 +200,7 @@ def run():
     #    * alpha   - continuous value for the learning rate, default is 0.5
     agent = env.create_agent(LearningAgent,
                              learning=True,
-                             alpha=0.1,
+                             alpha=0.6,
                              epsilon=0.95
                              )
 
