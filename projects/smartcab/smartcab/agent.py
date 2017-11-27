@@ -51,7 +51,6 @@ class LearningAgent(Agent):
             self.epsilon = math.e ** (-self.alpha * self.total_run)
             # self.epsilon = math.cos(self.alpha * self.total_run)
             self.total_run += 1
-            print 'qqq', self.total_run, self.alpha, self.epsilon
 
         return None
 
