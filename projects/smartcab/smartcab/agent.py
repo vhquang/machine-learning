@@ -1,5 +1,6 @@
 import random
 import math
+import pandas as pd
 from collections import namedtuple
 from environment import Agent, Environment
 from planner import RoutePlanner
@@ -48,8 +49,8 @@ class LearningAgent(Agent):
             # self.epsilon -= 0.05
             # self.epsilon = 0.97 ** self.total_run
             # self.epsilon = 1 / (self.total_run ** 2 if self.total_run > 0 else 1)
-            # self.epsilon = math.e ** (-0.008 * self.total_run)
-            self.epsilon = math.cos(0.5 * self.total_run)
+            self.epsilon = math.e ** (-0.008 * self.total_run)
+            # self.epsilon = math.cos(0.003 * self.total_run)
             self.total_run += 1
             print 'qqq', self.total_run, self.epsilon
 
@@ -204,7 +205,7 @@ def run():
     agent = env.create_agent(LearningAgent,
                              learning=True,
                              alpha=0.5,
-                            #  epsilon=0.95
+                             epsilon=1.0
                              )
 
     ##############
@@ -234,5 +235,21 @@ def run():
     sim.run(n_test=50, tolerance=0.05)
 
 
+def load_test_report(filename):
+    df = pd.read_csv('logs/' + filename)
+    df = df[df['testing'] == True]
+    df['actions'] = df['actions'].apply(lambda st: eval(st))
+    status = ['good_actions', 'minor_violation', 'major_violation', 'minor_accident', 'major_accident']
+    for i, col in enumerate(status):
+        df[col] = df['actions'].apply(lambda x: x[i])
+    test_length = len(df)
+    df['good_ratio'] = df['good_actions'] * 1.0 / (df['initial_deadline'] - df['final_deadline'])
+    report = df[status + ['good_ratio']].sum()
+    report['good_ratio'] = report['good_ratio'] / test_length
+    return report.drop('good_actions')
+
+
 if __name__ == '__main__':
-    run()
+    for _ in range(10):
+        run()
+        print 'qq1', load_test_report('sim_improved-learning.csv').to_dict()
