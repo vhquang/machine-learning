@@ -45,12 +45,13 @@ class LearningAgent(Agent):
             self.epsilon = 0
             self.alpha = 0
         else:
-            self.epsilon -= 0.05
-            # self.epsilon = self.alpha ** self.total_run
+            # self.epsilon -= 0.05
+            # self.epsilon = 0.97 ** self.total_run
             # self.epsilon = 1 / (self.total_run ** 2 if self.total_run > 0 else 1)
-            # self.epsilon = math.e ** (-self.alpha * self.total_run)
-            # self.epsilon = math.cos(self.alpha * self.total_run)
+            # self.epsilon = math.e ** (-0.008 * self.total_run)
+            self.epsilon = math.cos(0.5 * self.total_run)
             self.total_run += 1
+            print 'qqq', self.total_run, self.epsilon
 
         return None
 
@@ -222,7 +223,7 @@ def run():
     sim = Simulator(env, update_delay=0.001,
                     display=False,
                     log_metrics=True,
-                    optimized=False
+                    optimized=True
                     )
 
     ##############
@@ -230,7 +231,7 @@ def run():
     # Flags:
     #   tolerance  - epsilon tolerance before beginning testing, default is 0.05
     #   n_test     - discrete number of testing trials to perform, default is 0
-    sim.run(n_test=10, tolerance=0.05)
+    sim.run(n_test=50, tolerance=0.05)
 
 
 if __name__ == '__main__':
