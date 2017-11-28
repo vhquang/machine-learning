@@ -242,10 +242,11 @@ def load_test_report(filename):
     status = ['good_actions', 'minor_violation', 'major_violation', 'minor_accident', 'major_accident']
     for i, col in enumerate(status):
         df[col] = df['actions'].apply(lambda x: x[i])
-    test_length = len(df)
     df['good_ratio'] = df['good_actions'] * 1.0 / (df['initial_deadline'] - df['final_deadline'])
+
     report = df[status + ['good_ratio']].sum()
-    report['good_ratio'] = report['good_ratio'] / test_length
+    report['good_ratio'] = report['good_ratio'] / len(df)
+    report['success_ratio'] = df['success'].sum() / len(df)
     return report.drop('good_actions')
 
 
