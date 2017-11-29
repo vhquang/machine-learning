@@ -221,7 +221,7 @@ def run():
     #   display      - set to False to disable the GUI if PyGame is enabled
     #   log_metrics  - set to True to log trial and simulation results to /logs
     #   optimized    - set to True to change the default log file name
-    sim = Simulator(env, update_delay=0.001,
+    sim = Simulator(env, update_delay=0.000,
                     display=False,
                     log_metrics=True,
                     optimized=True
@@ -246,11 +246,12 @@ def load_test_report(filename):
 
     report = df[status + ['good_ratio']].sum()
     report['good_ratio'] = report['good_ratio'] / len(df)
-    report['success_ratio'] = df['success'].sum() / len(df)
+    report['success_ratio'] = df['success'].sum() * 1.0 / len(df)
     return report.drop('good_actions')
 
 
 if __name__ == '__main__':
-    for _ in range(10):
+    for _ in range(15):
         run()
-        print 'qq1', load_test_report('sim_improved-learning.csv').to_dict()
+        d = load_test_report('sim_improved-learning.csv').to_dict()
+        print 'qq1', '   '.join(['{}: {:.4f}'.format(k, v) for k, v in sorted(d.items())])
