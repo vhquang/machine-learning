@@ -49,10 +49,9 @@ class LearningAgent(Agent):
             # self.epsilon -= 0.05
             # self.epsilon = 0.97 ** self.total_run
             # self.epsilon = 1 / (self.total_run ** 2 if self.total_run > 0 else 1)
-            self.epsilon = math.e ** (-0.008 * self.total_run)
+            self.epsilon = math.e ** (-0.004 * self.total_run)
             # self.epsilon = math.cos(0.003 * self.total_run)
             self.total_run += 1
-            print 'qqq', self.total_run, self.epsilon
 
         return None
 
@@ -204,7 +203,7 @@ def run():
     #    * alpha   - continuous value for the learning rate, default is 0.5
     agent = env.create_agent(LearningAgent,
                              learning=True,
-                             alpha=0.5,
+                             alpha=0.6,
                              epsilon=1.0
                              )
 
@@ -251,7 +250,7 @@ def load_test_report(filename):
 
 
 if __name__ == '__main__':
-    for _ in range(15):
+    for _ in range(10):
         run()
         d = load_test_report('sim_improved-learning.csv').to_dict()
-        print 'qq1', '   '.join(['{}: {:.4f}'.format(k, v) for k, v in sorted(d.items())])
+        print 'report:', '   '.join(['{}: {:.4f}'.format(k, v) for k, v in sorted(d.items())])
