@@ -11922,9 +11922,9 @@ div#notebook {
 <p><strong>Answer:</strong></p>
 <ul>
 <li>3 flags that can be changed in the agent.py:<ul>
-<li>enforce_deadline: this will whether we will check and end the simulation if the agent cannot get to the destination within time limit.</li>
-<li>num_dummies: this will affect number of other dummy driver, and thus affect the possibility the agent will go/stop/turn.</li>
-<li>alpha: this will affect how fast or slow the agent will learn. </li>
+<li>enforce_deadline: this will affect the reward giving to an agent.</li>
+<li>num_dummies: this will affect the rate, or the possibility the agent will go/stop/turn.</li>
+<li>grid_size: this will affect the ability the agent can learn the space. </li>
 </ul>
 </li>
 <li>In environment.py, each agent is called with a function <code>act</code> to perform an action.</li>
@@ -13115,7 +13115,7 @@ AAAAAElFTkSuQmCC
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer:</strong></p>
-<p>For <strong>efficieny</strong>, agent will need <strong>waypoint</strong>. Waypoint will keep agent on track, and thus minimize the effort needed to complete the test. The <code>deadline</code> feature can be ignore, as we do not want the agent to ignore safety to meet deadline. We also want to keep our state small.</p>
+<p>For <strong>efficieny</strong>, agent will need <strong>waypoint</strong>, and probably <strong>deadline</strong>. Waypoint will keep agent on track, and thus minimize the effort needed to complete the test. In the environment where the reward system does not consider the "deadline", the agent would need to add "deadline" into its state to determine how important and how strict for it to follow the waypoint. However the reward system in our <code>environment.py</code> takes "deadline" into calculating the penalty, we can ignore it in our state.</p>
 <p>For <strong>safety</strong>, agent will need <strong>light</strong>, <strong>left</strong>, and <strong>oncoming</strong>. Agent should not go "forward" or "left" when the light is red, and agent can only turn right on the red light if there is no traffic going the same direction ('left': forward, 'oncoming': left).</p>
 <p>The <strong>right</strong> is not much useful for us, as it is directly correlate with <strong>light</strong>: if the light is green, the agent has the right of way (assuming that other car also obey traffic law), if the light is red, agent can only turn right, which will not interfere with traffic on the right.</p>
 <p>In summary, on any state, the agent will have total of 4 actions, which depend on the these factors:</p>
@@ -21599,7 +21599,7 @@ dtype: int64</pre>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer:</strong></p>
-<p>1) The agent goal is to avoid traffic incident and get to the target ontime. Its optimal policy would be to avoid collision with other cars (by obeying traffic light and watch for other drivers) and follow the waypoint. In addition, when traffic light is red, and it need to make a right turn, it should watch for traffic on the right. When traffic light is green, and it need to make a left turn, it should watch for oncoming traffic.</p>
+<p>1) The agent goal is to avoid traffic incident and get to the target ontime. Its optimal policy would be to obey traffic light, follow the waypoint, and avoid collision with other cars, in respective order. In addition, when traffic light is red, and it need to make a right turn, it should watch for head on traffic, and traffic on the right. When traffic light is green, and it need to make a left turn, it should watch for oncoming traffic and left traffic.</p>
 <p>2) Most the states in the log are expected with the policy. However, there are some states in which the policy picked by the agent are different than what I expect.</p>
 <p>3) With a state:</p>
 
@@ -21654,7 +21654,7 @@ dtype: int64</pre>
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer:</strong></p>
 <p>For gaining benefit with future reward, there would need to be a relationship between state, that define how likely one state can be transfer to/from another state. However, with a driving environment, there is no relationship between state. Ex: turning right on the red light has absolutely no relationship with whether next block will have green light or not, or avoiding oncoming traffic has no indication whether there will still be oncoming traffic. Thus, at any state, there is no indication about future reward to next state.</p>
-<p>And with the driving agent, it does not have information beyond its current state: how far it is from the destination, how much time needed to to reach the destination. Thus the agent would not be able to estimate how many step into the future to compute the expected future reward. Also, the depart and destination are randomly generated, along with randomize traffic. That makes it not possible to build the optimal route, or state tree across different trials. Furthermore, associating our scenario state with position state will create a very big state tree, which may not within our computation capacity.</p>
+<p>And with the driving agent, it does not have information beyond its current state: how far it is from the destination, how much time needed to to reach the destination. Thus the agent would not be able to estimate how many step into the future to compute the expected future reward. Also, many factors of the environment: depart and destination point, traffic, light... are highly dynamic and total random. That makes it not possible to build the distribution probability nor state tree, which can represent best route, best course of action, base on how one state is compare to another.</p>
 
 </div>
 </div>
