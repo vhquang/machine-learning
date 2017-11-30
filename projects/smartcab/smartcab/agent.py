@@ -46,12 +46,13 @@ class LearningAgent(Agent):
             self.epsilon = 0
             self.alpha = 0
         else:
-            # self.epsilon -= 0.05
+            self.epsilon -= 0.05
             # self.epsilon = 0.97 ** self.total_run
             # self.epsilon = 1 / (self.total_run ** 2 if self.total_run > 0 else 1)
-            self.epsilon = math.e ** (-0.004 * self.total_run)
+            # self.epsilon = math.e ** (-0.004 * self.total_run)
             # self.epsilon = math.cos(0.003 * self.total_run)
             self.total_run += 1
+            print 'qqq', self.total_run
 
         return None
 
@@ -161,7 +162,7 @@ class LearningAgent(Agent):
 
         self.Q[state][action] = (
             (1 - self.alpha) * self.Q[state][action] +
-            self.alpha * (reward + self.get_maxQ(state))
+            self.alpha * (reward)
         )
 
         return
@@ -203,7 +204,7 @@ def run():
     #    * alpha   - continuous value for the learning rate, default is 0.5
     agent = env.create_agent(LearningAgent,
                              learning=True,
-                             alpha=0.6,
+                             alpha=0.5,
                              epsilon=1.0
                              )
 
@@ -223,7 +224,7 @@ def run():
     sim = Simulator(env, update_delay=0.000,
                     display=False,
                     log_metrics=True,
-                    optimized=True
+                    optimized=False
                     )
 
     ##############
@@ -231,7 +232,7 @@ def run():
     # Flags:
     #   tolerance  - epsilon tolerance before beginning testing, default is 0.05
     #   n_test     - discrete number of testing trials to perform, default is 0
-    sim.run(n_test=50, tolerance=0.05)
+    sim.run(n_test=10, tolerance=0.05)
 
 
 def load_test_report(filename):
@@ -250,7 +251,7 @@ def load_test_report(filename):
 
 
 if __name__ == '__main__':
-    for _ in range(10):
+    for _ in range(1):
         run()
-        d = load_test_report('sim_improved-learning.csv').to_dict()
-        print 'report:', '   '.join(['{}: {:.4f}'.format(k, v) for k, v in sorted(d.items())])
+        # d = load_test_report('sim_improved-learning.csv').to_dict()
+        # print 'report:', '   '.join(['{}: {:.4f}'.format(k, v) for k, v in sorted(d.items())])
