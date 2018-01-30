@@ -36,13 +36,9 @@ An LSTM model will look at a sequence of data in an interval (for example: 7 day
 
 ### Benchmark Model
 
-The naive guess and the ARIMA model makes prediction base on previous price data, and compare them to the actual data obtain. Their metrics are obtain from how closely the predictions follow the actual price:
-
-[Figure below]
+The naive guess and the ARIMA model makes prediction base on previous price data, and compare them to the actual data obtain. Their metrics are obtain from how closely the predictions follow the actual price:\
 
 ![ARIMA visual result](https://i2.wp.com/www.quantinsti.com/wp-content/uploads/2017/03/Actual-Vs-Forecasted-Returns.png)
-
-![ARIMA Data](https://i1.wp.com/www.quantinsti.com/wp-content/uploads/2017/03/Returns-Series.png)
 
 
 ### Evaluation Metrics
