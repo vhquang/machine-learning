@@ -18,13 +18,13 @@ def get_stock_price(ticker: str):
     return company
 
 
-def get_closing_price(ticker: str, drop_date_index=True):
+def get_closing_price(ticker: str, as_array=True):
     """
     Get closing price for a company with given `ticker`.
     """
-    df = get_closing_price(ticker)
+    df = get_stock_price(ticker)
     series= df['close']
-    if drop_date_index:
+    if as_array:
         return np.array(df)
     return series
 
