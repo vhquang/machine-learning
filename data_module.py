@@ -6,6 +6,7 @@ import pandas as pd
 PRICES_FILE = 'data/prices.csv'
 ADJUST_PRICE_FILE = 'data/prices-split-adjusted.csv'
 
+
 def get_stock_price(ticker: str):
     """
     Return the price data for company with given `ticker` .
@@ -15,6 +16,7 @@ def get_stock_price(ticker: str):
     company.index = pd.to_datetime(company['date'])
     company.drop(['date', 'symbol'], axis=1, inplace=True)
     return company
+
 
 def get_closing_price(ticker: str, drop_date_index=True):
     """
@@ -26,11 +28,13 @@ def get_closing_price(ticker: str, drop_date_index=True):
         return np.array(df)
     return series
 
+
 def split(data, ratio: float=0.9):
     # TODO maybe we can do this after prepare data,
     # to prevent losing data point while rouding
     m = round(len(data) * ratio)
     return data[:m], data[m:]
+
 
 def make_time_windows(data: tp.Iterable, timesteps: int) -> (np.ndarray, np.ndarray):
     """
@@ -52,10 +56,27 @@ def make_time_windows(data: tp.Iterable, timesteps: int) -> (np.ndarray, np.ndar
     return np.array(train), np.array(expected)
 
 
+def make_normalized_train_data(data: tp.Iterable, timesteps: int):
+    """
+    Normalize train and test data, base on the last known value of previous windonw.
+
+    Ex:
+    >>> make_normalized_train_data([0,1,2,3,4,5], timesteps=3)
+    train: [ [-1, -0.5, 0], [-0.5, 0, 0.5] ]
+    expected: [0.5, 1]
+    """
+    train, check = make_time_windows(data, timesteps)
+    n = len(train)
+    normalizers = [train[0][-1]] + [train[i-1][-1] for i in range(1, n)]
+    norm_train = [train[i] / normalizers[i] - 1 for i in range(n)]
+    norm_check = [check[i] / normalizers[i] - 1 for i in range(n)]
+    return np.array(norm_train), np.array(norm_check), normalizers
+
+
 def main():
-    seq = make_time_windows(range(6), timesteps=3)
-    print(seq[0], seq[1])
-    print()
+    seq = make_normalized_train_data(np.arange(6), timesteps=3)
+    print(seq[0])
+    print(seq[1])
 
 if __name__ == '__main__':
     main()
