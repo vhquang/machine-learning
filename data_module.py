@@ -29,13 +29,6 @@ def get_closing_price(ticker: str, as_array=True):
     return series
 
 
-def split(data, ratio: float=0.9):
-    # TODO maybe we can do this after prepare data,
-    # to prevent losing data point while rouding
-    m = round(len(data) * ratio)
-    return data[:m], data[m:]
-
-
 def make_time_windows(data: tp.Iterable, timesteps: int) -> (np.ndarray, np.ndarray):
     """
     Split the data into sequence of training inputs and expected results.
@@ -71,6 +64,11 @@ def make_normalized_train_data(data: tp.Iterable, timesteps: int):
     norm_train = [train[i] / normalizers[i] - 1 for i in range(n)]
     norm_check = [check[i] / normalizers[i] - 1 for i in range(n)]
     return np.array(norm_train), np.array(norm_check), normalizers
+
+
+def split(data, ratio: float=0.9):
+    m = round(len(data) * ratio)
+    return data[:m], data[m:]
 
 
 def main():
