@@ -91,6 +91,14 @@ def test_denormalize_data():
         assert a == b, '{} != {}'.format(a, b)
 
 
+def reshape(array: np.ndarray):
+    """
+    keras expect each input value in form of a vector.
+    So if we have a list of values, we need to reshape it into list of [1].
+    """
+    return np.reshape(array, array.shape + (1,))
+
+
 def main():
     # seq = make_normalized_train_data(np.arange(6), timesteps=3)
     # print(seq[0])
