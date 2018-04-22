@@ -25,7 +25,7 @@ def get_closing_price(ticker: str, as_array=True):
     df = get_stock_price(ticker)
     series= df['close']
     if as_array:
-        return np.array(df)
+        return np.array(series)
     return series
 
 
@@ -58,12 +58,12 @@ def make_normalized_train_data(data: tp.Iterable, timesteps: int):
     train: [ [-1, -0.5, 0], [-0.5, 0, 0.5] ]
     expected: [0.5, 1]
     """
-    train, check = make_time_windows(data, timesteps)
+    train, expected = make_time_windows(data, timesteps)
     n = len(train)
     normalizers = [train[0][-1]] + [train[i-1][-1] for i in range(1, n)]
     norm_train = [train[i] / normalizers[i] - 1 for i in range(n)]
-    norm_check = [check[i] / normalizers[i] - 1 for i in range(n)]
-    return np.array(norm_train), np.array(norm_check), normalizers
+    norm_expected = [expected[i] / normalizers[i] - 1 for i in range(n)]
+    return np.array(norm_train), np.array(norm_expected), normalizers
 
 
 def split(data, ratio: float=0.9):
