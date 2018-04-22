@@ -61,11 +61,30 @@ In this section, you will be expected to analyze the data you are using for the 
 - _If a dataset is **not** present for this problem, has discussion been made about the input space or input data for your problem?_
 - _Are there any abnormalities or characteristics about the input space or dataset that need to be addressed? (categorical variables, missing values, outliers, etc.)_
 
+The New York Stock Exchange (NYSE) in 2010-2016 will be used for this project. The dataset can be downloaded on Kaggle (https://www.kaggle.com/dgawlik/nyse/data). The data is chosen because of the record of Open/Close/Low/High price for each day on the market during 2010-2016. In addition, there is also extra information about the securities price, splited-price, and the information about the company's earning, expense, profit... that can be served as extra parameters for the model. However, for this project, we will only use the closing data as training input.
+
 ### Exploratory Visualization
 In this section, you will need to provide some form of visualization that summarizes or extracts a relevant characteristic or feature about the data. The visualization should adequately support the data being used. Discuss why this visualization was chosen and how it is relevant. Questions to ask yourself when writing this section:
 - _Have you visualized a relevant characteristic or feature about the dataset or input data?_
 - _Is the visualization thoroughly analyzed and discussed?_
 - _If a plot is provided, are the axes, title, and datum clearly defined?_
+
+The data has stock price information of 501 companies, during the period of time between 2010 to 2016. For this project, we will only use closing stock price for Google.
+
+![Google closing price](google-price-close.png)
+
+We notice that there are some missing data on open business dates, such as: 2010-01-09, 2010-01-10, 2010-01-16, 2010-01-17, 2010-01-18... However, with those missing data, it is safe skip them during the process of constructing the time-window. The data has over 1700 entries, those missing values will not contribution significant difference to the result of method analysist. Furthermore, we conclude that we do not need to align time index for the goal of this project, so we decide to drop the time index to reduce the complexity during training and processing data.
+
+We conduct a series of exploration on the data, with different time resolution, to find out if there is a autocorrelation coefficient. Here are the factors that we observer:
+
+- For 2 months data, positive correlation is around 4-5 days.
+- For 6 months data, positive correlation is around 15 days. For rare occasion, like 2012-2014, we have positive correlation on 2-3 months period.
+- For 2 years data, correlation is around 100 days (3 months).
+- For whole data, correlation is around 300 days( a year).
+
+![Autocorrelation for 2 months period](autocorrelation-for-2months.png)
+![Autocorrelation for 2 years period](autocorrelation-for-2year.png)
+![Autocorrelation for entire data](autocorrelation-for-whole.png)
 
 ### Algorithms and Techniques
 In this section, you will need to discuss the algorithms and techniques you intend to use for solving the problem. You should justify the use of each one based on the characteristics of the problem and the problem domain. Questions to ask yourself when writing this section:
