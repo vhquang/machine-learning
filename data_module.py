@@ -1,3 +1,4 @@
+import itertools
 import typing as tp
 
 import numpy as np
@@ -66,15 +67,35 @@ def make_normalized_train_data(data: tp.Iterable, timesteps: int):
     return np.array(norm_train), np.array(norm_expected), normalizers
 
 
+def denormalize_data(data, normalizers):
+    """
+    Return normalized data to the original values.
+    """
+    assert len(data) == len(normalizers)
+    res = [(1 + data[i]) * normalizers[i] for i in range(len(data))]
+    return np.array(res)
+
+
 def split(data, ratio: float=0.9):
     m = round(len(data) * ratio)
     return data[:m], data[m:]
 
 
+def test_denormalize_data():
+    data = np.random.rand(int(1e4)) * 1000
+    _, values = make_time_windows(data, timesteps=4)
+    _, norm, normalizers = make_normalized_train_data(data, timesteps=4)
+    denorm = denormalize_data(norm, normalizers)
+    for z in itertools.zip_longest(values, denorm):
+        a, b = map(lambda x: np.around(x, 6), z)
+        assert a == b, '{} != {}'.format(a, b)
+
+
 def main():
-    seq = make_normalized_train_data(np.arange(6), timesteps=3)
-    print(seq[0])
-    print(seq[1])
+    # seq = make_normalized_train_data(np.arange(6), timesteps=3)
+    # print(seq[0])
+    # print(seq[1])
+    test_denormalize_data()
 
 if __name__ == '__main__':
     main()
