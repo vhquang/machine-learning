@@ -95,8 +95,10 @@ Our main interest is to make sure we have a correct implementation for building 
 
 ```sphinx
 input_shape = (batch_size, timesteps, window_size)`
-`batch_size`: the number of minibatch that is trained at the same time. We use only 1 batch_size be default.
-`timesteps`: number of observations in one interval. We use 4, as observed in the data exploration.
+`batch_size`: the number of minibatch that is trained at the same time.
+            We use only 1 batch_size be default.
+`timesteps`: number of observations in one interval.
+            We use 4, as observed in the data exploration.
 `window_size`: we use 1 day prediction, as explain above.
 ```
 
@@ -198,8 +200,8 @@ While the result of the project can be skeptical, due to the issues mention in t
 
 ## References:
 
-[1]: Weng, Lilian.  https://lilianweng.github.io/lil-log/2017/07/08/predict-stock-prices-using-RNN-part-1.html
+[1] Weng, Lilian.  https://lilianweng.github.io/lil-log/2017/07/08/predict-stock-prices-using-RNN-part-1.html
 
-[2]: Aungiers, Jakob.  http://www.jakob-aungiers.com/articles/a/LSTM-Neural-Network-for-Time-Series-Prediction
+[2] Aungiers, Jakob.  http://www.jakob-aungiers.com/articles/a/LSTM-Neural-Network-for-Time-Series-Prediction
 
-[3]: Brownlee, Jason. https://machinelearningmastery.com/arima-for-time-series-forecasting-with-python/
+[3] Brownlee, Jason. https://machinelearningmastery.com/arima-for-time-series-forecasting-with-python/
