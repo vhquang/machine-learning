@@ -21,6 +21,7 @@ Overview of existing literature and tutorials:
 
 - Predict Stock Price using RNN.[1]
 - LSTM Neural Network for Time Series Prediction.[2]
+- How to Create an ARIMA Model for Time Series Forecasting with Python [3]
 
 ### Problem Statement
 
@@ -242,11 +243,24 @@ In this section, you will summarize the entire end-to-end problem solution and d
 - _Were there any difficult aspects of the project?_
 - _Does the final model and solution fit your expectations for the problem, and should it be used in a general setting to solve these types of problems?_
 
+A large portion of the project's time was put into handling time index, and into making sure all the entries are aligned properly throughout different implementations. While this is really important when handling time sequence data, it is not a critical part of the project. Throwing away time index and treating data as numpy sequence simplify many parts of data handling and data shaping. If the time index is still needed at the end of this project, it can still be re-aligned. This approach is more practical than introducing another data's attribute to training process of the LSTM model.
+
+The LSTM is a very powerful technique, with very minimal setup. More time of the project was spent on understanding the theoritical underhood model, than to actually implementing and optimizing the model used in the project. Also, different tutorials and papers use different terminologies for time sequence and for model's parameters. The terminologies are similar, but have different meaning depend on the context of input data or model's expectation.
+
+And due to the logic of keeping and throwing away "memory" of LSTM, it pushed me to develop domain knowledge in financing and stock trading. Thanks to some basic finance knowledge gained during the project, I was able to realize the limitation of the data when feeding them to LSTM model. While LSTM is great at extracting features out the previous context, timestamp alone does not contain much feature to be extracted and to help with the predicting ability.
+
 ### Improvement
 In this section, you will need to provide discussion as to how one aspect of the implementation you designed could be improved. As an example, consider ways your implementation can be made more general, and what would need to be modified. You do not need to make this improvement, but the potential solutions resulting from these changes are considered and compared/contrasted to your current solution. Questions to ask yourself when writing this section:
 - _Are there further improvements that could be made on the algorithms or techniques you used in this project?_
 - _Were there algorithms or techniques you researched that you did not know how to implement, but would consider using if you knew how?_
 - _If you used your final solution as the new benchmark, do you think an even better solution exists?_
+
+While the result of the project can be skeptical, due to the issues mention in the "Justification" section, there are some aspects that we can implement for future project:
+
+- The result of predictions should be combined. With the compounding error, we can avoid a problem in which the data correcting the prediction.
+- There could be a better loss function, in which we can penalize the score more if the model make prediction in wrong direction. It is oftern more useful to predict if the price will go up or down, rather than will go up to which amount.
+- The prediction can be return in form of price momentum, instead of specific dollar amount. It can help highlighting the potential for the price will go in certain direction, through a probability value instead of dollar value.
+- We can utilize LSTM for evaluating multi-variables, such as finding a correlation between price moment in two or more companies. Time sequence does not show the causal inference to the stock price, because time does not cause the price to change, time only reflect the change of price. Relying time sequence analysist will not yeild a good performance for pricing, as we will know identify the causal connection. But with the way LSTM work by maintaining related features and throwing away un-related features, we can utilize it to process more information's dimension.
 
 -----------
 
@@ -266,4 +280,4 @@ In this section, you will need to provide discussion as to how one aspect of the
 
 [2]: Aungiers, Jakob.  http://www.jakob-aungiers.com/articles/a/LSTM-Neural-Network-for-Time-Series-Prediction
 
-Brownlee, Jason. https://machinelearningmastery.com/arima-for-time-series-forecasting-with-python/
+[3]: Brownlee, Jason. https://machinelearningmastery.com/arima-for-time-series-forecasting-with-python/
