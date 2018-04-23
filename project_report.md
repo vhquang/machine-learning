@@ -29,17 +29,7 @@ In this section, you will want to clearly define the problem that you are trying
 - _Have you thoroughly discussed how you will attempt to solve the problem?_
 - _Is an anticipated solution clearly defined? Will the reader understand what results you are looking for?_
 
-The stock market has some properties on its data for each day: Open price, Close price, Adjusted price. In this project, I will use a RNN with LSTM to process a window interval (7 days, 30 days, etc...), and try to predict the closing stock price for the next day. A naive prediction would be taking an average of all the previous price in the window as a prediction for the next day's price:
-
-```python
-price[t] = avarage(price[t-1] + price[t-2] + price[t-3]...)
-```
-
-An improve of that method is a ARIMA model, which takes into consideration a coefficient for each day price:
-
-```python
-price[t] = a1*price[t-1] + a2*price(t-2] + a3*price[t-3] ...
-```
+The stock market has some properties on its data for each day: Open price, Close price, Adjusted price. In this project, I will use a RNN with LSTM to process a window interval (7 days, 30 days, etc...), and try to predict the closing stock price for the next day.
 
 We will see if an LSTM model can make a better prediction than a naive guess and an ARIMA model. Given that training a RNN and LSTM is computationally expensive, we will also conduct an analysist on what advantage and disadvantage of using an LSTM. A brief review of how ARIMA and LSTM work will also be included, to show their relevance to the data that we had.
 
@@ -83,7 +73,9 @@ We conduct a series of exploration on the data, with different time resolution, 
 - For whole data, correlation is around 300 days( a year).
 
 ![Autocorrelation for 2 months period](autocorrelation-for-2months.png)
+
 ![Autocorrelation for 2 years period](autocorrelation-for-2year.png)
+
 ![Autocorrelation for entire data](autocorrelation-for-whole.png)
 
 ### Algorithms and Techniques
@@ -92,10 +84,26 @@ In this section, you will need to discuss the algorithms and techniques you inte
 - _Are the techniques to be used thoroughly discussed and justified?_
 - _Is it made clear how the input data or datasets will be handled by the algorithms and techniques chosen?_
 
+There a 3 different methods that we will compare: a naive averaging method, an ARIMA model, and a LSTM model prediction.
+
+For the naive averaging method, the prediction is simple the average of previous _t_ days:
+
+```python
+price[t] = avarage(price[t-1] + price[t-2] + price[t-3]...)
+```
+
+ARIMA stands for Autoregressive Integrated Moving average. From our previous exploration, we determine that a 4-5 days windows would show the most correlation between the observations we have in our data. To construct an ARIMA model, we will use 4 days as a number of lack, and 1 as number of the degree of differencing in our model. The data will be split into train and test data. After we make prediction for day _t_, we will "roll" the actual data for date _t_ into our model before the next iteration of predictinng day _t+1_. This has a negative affect of our model has a power of correcting itself (for example: prediction for day _t+1_ will not carry the mistake the model make on previous day _t_). However, this will help making it more consistent with the algorithm we use for building LSTM model, and thus help us in comparison the two methods.
+
+For consistency, we will also use 4 days window as a timestep for our LSTM model. The data will be splited in a sequence of 4-days window, with the value of the 5th day is the value the model needs to predict. A LSTM model is a special kind of RNN, which the output of one training is fed back into the network to train a next output. A LSTM is different than RNN that the former has more sophisticated way of control which input information it will take and which information it will keep.
+
+For this project, we choose to use a stateful LSTM. A stateful model will retain its state beyond on training batch. This will help us demostrate that the window size, which is important in an ARIMA model, is not an important parameter in a LSTM model, as the model is capable of finding that relevant information by itself.
+
 ### Benchmark
 In this section, you will need to provide a clearly defined benchmark result or threshold for comparing across performances obtained by your solution. The reasoning behind the benchmark (in the case where it is not an established result) should be discussed. Questions to ask yourself when writing this section:
 - _Has some result or value been provided that acts as a benchmark for measuring performance?_
 - _Is it clear how this result or value was obtained (whether by data or by hypothesis)?_
+
+With each method, we will calculate the difference between our actual result and the predictions. We will also collection information on how well our predictions follow the trend of the actual prices, as well as how much of the lag-behind the prediction follows the actual prices.
 
 
 ## III. Methodology
@@ -106,6 +114,12 @@ In this section, all of your preprocessing steps will need to be clearly documen
 - _If the algorithms chosen require preprocessing steps like feature selection or feature transformations, have they been properly documented?_
 - _Based on the **Data Exploration** section, if there were abnormalities or characteristics that needed to be addressed, have they been properly corrected?_
 - _If no preprocessing is needed, has it been made clear why?_
+
+Our data contains over 1700 entries between 2010-2016. We chose to split up 90% of the begining of the data to be used as training data. The 10% rest will be used as testing data to see how well the model can predict future price.
+
+In Figure 1 which demostrate the visual of the data, we clearly notice that the data has upward increasing trend. In order to make the data stationary, we will either need to remove the trend, or pass in the degree of differencing for our ARIMA model. We choose to use the built-in feature in ARIMA model in `statsmodels` to handle the non-stationary data.
+
+However, for our LSTM model, it performs poorly on the testing data. With the upward increasing price, the model is expected to predict the value which has never seen before. To overcome this problem, we choose to normalize our data in reference to the previous seen data. So, the model is expected to train and to predict base on the relative change of the price, instead of the absolute price value (ex: price increase 12%, 200%, 300%...). When we evaluate the model, we will denormalize the relative change back the the dollar value, so that we can make intuitive visual report and comparison.
 
 ### Implementation
 In this section, the process for which metrics, algorithms, and techniques that you implemented for the given data will need to be clearly documented. It should be abundantly clear how the implementation was carried out, and discussion should be made regarding any complications that occurred during this process. Questions to ask yourself when writing this section:
@@ -176,3 +190,5 @@ In this section, you will need to provide discussion as to how one aspect of the
 [1]: Weng, Lilian.  https://lilianweng.github.io/lil-log/2017/07/08/predict-stock-prices-using-RNN-part-1.html
 
 [2]: Aungiers, Jakob.  http://www.jakob-aungiers.com/articles/a/LSTM-Neural-Network-for-Time-Series-Prediction
+
+Brownlee, Jason. https://machinelearningmastery.com/arima-for-time-series-forecasting-with-python/
