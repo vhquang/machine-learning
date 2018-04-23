@@ -11,10 +11,6 @@ April 2018
 
 ### Project Overview
 
-In this section, look to provide a high-level overview of the project in layman’s terms. Questions to ask yourself when writing this section:
-- _Has an overview of the project been provided, such as the problem domain, project origin, and related datasets or input data?_
-- _Has enough background information been given so that an uninformed reader would understand the problem domain and following problem statement?_
-
 Stock market price is both interesting and challenging to predict. Traditionally, it is analyzed with statistical model, then tested with series of back-testing, which is a process of applying the model with historical data to measure the performance of the model. This project aims to use a LSTM (Long Short Term Memory) model to automate that process, and measure how much information can be captured by the LSTM, and finally to compare it with current statistical model.
 
 Overview of existing literature and tutorials:
@@ -25,40 +21,22 @@ Overview of existing literature and tutorials:
 
 ### Problem Statement
 
-In this section, you will want to clearly define the problem that you are trying to solve, including the strategy (outline of tasks) you will use to achieve the desired solution. You should also thoroughly discuss what the intended solution will be for this problem. Questions to ask yourself when writing this section:
-- _Is the problem statement clearly defined? Will the reader understand what you are expecting to solve?_
-- _Have you thoroughly discussed how you will attempt to solve the problem?_
-- _Is an anticipated solution clearly defined? Will the reader understand what results you are looking for?_
-
 The stock market has some properties on its data for each day: Open price, Close price, Adjusted price. In this project, I will use a RNN with LSTM to process a window interval (7 days, 30 days, etc...), and try to predict the closing stock price for the next day.
 
 We will see if an LSTM model can make a better prediction than a naive guess and an ARIMA model. Given that training a RNN and LSTM is computationally expensive, we will also conduct an analysist on what advantage and disadvantage of using an LSTM. A brief review of how ARIMA and LSTM work will also be included, to show their relevance to the data that we had.
 
 ### Evaluation Metrics
-In this section, you will need to clearly define the metrics or calculations you will use to measure performance of a model or result in your project. These calculations and metrics should be justified based on the characteristics of the problem and problem domain. Questions to ask yourself when writing this section:
-- _Are the metrics you’ve chosen to measure the performance of your models clearly discussed and defined?_
-- _Have you provided reasonable justification for the metrics chosen based on the problem and solution?_
 
 With the goal of predicting stock price, our evaluation metric is to simply measure how far the prediction is, to the actual closing price on a given date. In this project, I pick a simple model, in which the difference is reported in form of absolute difference. That will make comparison between differenet implementations easier. However, in practical, an evaluation which takes into consideration of the direction of the price, would contribute more evaluation value. For example, if the model predicts an "x" amount increasement in price while the actual price is decreased, should have more penalty than the prediction of "x" amount less than actual price.
 
 
 ## II. Analysis
-_(approx. 2-4 pages)_
 
 ### Data Exploration
-In this section, you will be expected to analyze the data you are using for the problem. This data can either be in the form of a dataset (or datasets), input data (or input files), or even an environment. The type of data should be thoroughly described and, if possible, have basic statistics and information presented (such as discussion of input features or defining characteristics about the input or environment). Any abnormalities or interesting qualities about the data that may need to be addressed have been identified (such as features that need to be transformed or the possibility of outliers). Questions to ask yourself when writing this section:
-- _If a dataset is present for this problem, have you thoroughly discussed certain features about the dataset? Has a data sample been provided to the reader?_
-- _If a dataset is present for this problem, are statistics about the dataset calculated and reported? Have any relevant results from this calculation been discussed?_
-- _If a dataset is **not** present for this problem, has discussion been made about the input space or input data for your problem?_
-- _Are there any abnormalities or characteristics about the input space or dataset that need to be addressed? (categorical variables, missing values, outliers, etc.)_
 
 The New York Stock Exchange (NYSE) in 2010-2016 will be used for this project. The dataset can be downloaded on Kaggle (https://www.kaggle.com/dgawlik/nyse/data). The data is chosen because of the record of Open/Close/Low/High price for each day on the market during 2010-2016. In addition, there is also extra information about the securities price, splited-price, and the information about the company's earning, expense, profit... that can be served as extra parameters for the model. However, for this project, we will only use the closing data as training input.
 
 ### Exploratory Visualization
-In this section, you will need to provide some form of visualization that summarizes or extracts a relevant characteristic or feature about the data. The visualization should adequately support the data being used. Discuss why this visualization was chosen and how it is relevant. Questions to ask yourself when writing this section:
-- _Have you visualized a relevant characteristic or feature about the dataset or input data?_
-- _Is the visualization thoroughly analyzed and discussed?_
-- _If a plot is provided, are the axes, title, and datum clearly defined?_
 
 The data has stock price information of 501 companies, during the period of time between 2010 to 2016. For this project, we will only use closing stock price for Google.
 
@@ -80,10 +58,6 @@ We conduct a series of exploration on the data, with different time resolution, 
 ![Autocorrelation for entire data](autocorrelation-for-whole.png)
 
 ### Algorithms and Techniques
-In this section, you will need to discuss the algorithms and techniques you intend to use for solving the problem. You should justify the use of each one based on the characteristics of the problem and the problem domain. Questions to ask yourself when writing this section:
-- _Are the algorithms you will use, including any default variables/parameters in the project clearly defined?_
-- _Are the techniques to be used thoroughly discussed and justified?_
-- _Is it made clear how the input data or datasets will be handled by the algorithms and techniques chosen?_
 
 There a 3 different methods that we will compare: a naive averaging method, an ARIMA model, and a LSTM model prediction.
 
@@ -100,9 +74,6 @@ For consistency, we will also use 4 days window as a timestep for our LSTM model
 For this project, we choose to use a stateful LSTM. A stateful model will retain its state beyond on training batch. This will help us demostrate that the window size, which is important in an ARIMA model, is not an important parameter in a LSTM model, as the model is capable of finding that relevant information by itself.
 
 ### Benchmark
-In this section, you will need to provide a clearly defined benchmark result or threshold for comparing across performances obtained by your solution. The reasoning behind the benchmark (in the case where it is not an established result) should be discussed. Questions to ask yourself when writing this section:
-- _Has some result or value been provided that acts as a benchmark for measuring performance?_
-- _Is it clear how this result or value was obtained (whether by data or by hypothesis)?_
 
 With each method, we will calculate the difference between our actual result and the predictions. We will also collection information on how well our predictions follow the trend of the actual prices, as well as how much of the lag-behind the prediction follows the actual prices.
 
@@ -111,10 +82,6 @@ With each method, we will calculate the difference between our actual result and
 _(approx. 3-5 pages)_
 
 ### Data Preprocessing
-In this section, all of your preprocessing steps will need to be clearly documented, if any were necessary. From the previous section, any of the abnormalities or characteristics that you identified about the dataset will be addressed and corrected here. Questions to ask yourself when writing this section:
-- _If the algorithms chosen require preprocessing steps like feature selection or feature transformations, have they been properly documented?_
-- _Based on the **Data Exploration** section, if there were abnormalities or characteristics that needed to be addressed, have they been properly corrected?_
-- _If no preprocessing is needed, has it been made clear why?_
 
 Our data contains over 1700 entries between 2010-2016. We chose to split up 90% of the begining of the data to be used as training data. The 10% rest will be used as testing data to see how well the model can predict future price.
 
@@ -123,10 +90,6 @@ In Figure 1 which demostrate the visual of the data, we clearly notice that the 
 However, for our LSTM model, it performs poorly on the testing data. With the upward increasing price, the model is expected to predict the value which has never seen before. To overcome this problem, we choose to normalize our data in reference to the previous seen data. So, the model is expected to train and to predict base on the relative change of the price, instead of the absolute price value (ex: price increase 12%, 200%, 300%...). When we evaluate the model, we will denormalize the relative change back the the dollar value, so that we can make intuitive visual report and comparison.
 
 ### Implementation
-In this section, the process for which metrics, algorithms, and techniques that you implemented for the given data will need to be clearly documented. It should be abundantly clear how the implementation was carried out, and discussion should be made regarding any complications that occurred during this process. Questions to ask yourself when writing this section:
-- _Is it made clear how the algorithms and techniques were implemented with the given datasets or input data?_
-- _Were there any complications with the original metrics or techniques that required changing prior to acquiring a solution?_
-- _Was there any part of the coding process (e.g., writing complicated functions) that should be documented?_
 
 Our main interest is to make sure we have a correct implementation for building the LSTM model. Even though LSTM is fully capable is doing multi-days predictions, the scenario in which the training data is a sequence with each item is of _n-length_, and the model will make a prediction of _n-length_ day into the future. Such scenario can give the model the future-bias, in which the model has hint about the future (in this case: _n1, n2..._) to predict _n0_. Instead, we choose to build our model to predict only 1 day into the future. The input shape that is passed through the LSTM cell is:
 
@@ -181,10 +144,6 @@ _________________________________________________________________
 ```
 
 ### Refinement
-In this section, you will need to discuss the process of improvement you made upon the algorithms and techniques you used in your implementation. For example, adjusting parameters for certain models to acquire improved solutions would fall under the refinement category. Your initial and final solutions should be reported, as well as any significant intermediate results as necessary. Questions to ask yourself when writing this section:
-- _Has an initial solution been found and clearly reported?_
-- _Is the process of improvement clearly documented, such as what techniques were used?_
-- _Are intermediate and final solutions clearly reported as the process is improved?_
 
 We attempt to train both stateful LSTM model and stateless LSTM model. Both models converse rather quickly, indicating that the 4-days window is sufficient for LSTM to make prediction base on our data. It can also mean that there is no obvious pattern for the LSTM to discover through 4-days windows.
 
@@ -192,14 +151,8 @@ And since both model can converse really quickly (less than 3 epochs), we decide
 
 
 ## IV. Results
-_(approx. 2-3 pages)_
 
 ### Model Evaluation and Validation
-In this section, the final model and any supporting qualities should be evaluated in detail. It should be clear how the final model was derived and why this model was chosen. In addition, some type of analysis should be used to validate the robustness of this model and its solution, such as manipulating the input data or environment to see how the model’s solution is affected (this is called sensitivity analysis). Questions to ask yourself when writing this section:
-- _Is the final model reasonable and aligning with solution expectations? Are the final parameters of the model appropriate?_
-- _Has the final model been tested with various inputs to evaluate whether the model generalizes well to unseen data?_
-- _Is the model robust enough for the problem? Do small perturbations (changes) in training data or the input space greatly affect the results?_
-- _Can results found from the model be trusted?_
 
 We expect our naive averaging to perform poorly, due to the simplistic solution, and due to the fact that the model will also regress to the mean. That means most of the time the model will go in the opposite direction of the current price's trend. A visual comparison confirms our expectation:
 
@@ -214,10 +167,6 @@ The LSTM model performs equally well to the ARIMA model. Those two models have a
 ![LSTM prediction](lstm-predictions-compare.png)
 
 ### Justification
-In this section, your model’s final solution and its results should be compared to the benchmark you established earlier in the project using some type of statistical analysis. You should also justify whether these results and the solution are significant enough to have solved the problem posed in the project. Questions to ask yourself when writing this section:
-- _Are the final results found stronger than the benchmark result reported earlier?_
-- _Have you thoroughly analyzed and discussed the final solution?_
-- _Is the final solution significant enough to have solved the problem?_
 
 The result of the performance of the LSTM model shows that it has successfully captured the calculation for the closing price of the next day. While the ARIMA requires some analysist on the data to determine the parameters needed to initialize its model, the LSTM is able to optimize its model with very minimal initial configuration.
 
@@ -228,20 +177,8 @@ However, this result does not mean that we have successfully predicting the futu
 
 
 ## V. Conclusion
-_(approx. 1-2 pages)_
-
-### Free-Form Visualization
-In this section, you will need to provide some form of visualization that emphasizes an important quality about the project. It is much more free-form, but should reasonably support a significant result or characteristic about the problem that you want to discuss. Questions to ask yourself when writing this section:
-- _Have you visualized a relevant or important quality about the problem, dataset, input data, or results?_
-- _Is the visualization thoroughly analyzed and discussed?_
-- _If a plot is provided, are the axes, title, and datum clearly defined?_
 
 ### Reflection
-In this section, you will summarize the entire end-to-end problem solution and discuss one or two particular aspects of the project you found interesting or difficult. You are expected to reflect on the project as a whole to show that you have a firm understanding of the entire process employed in your work. Questions to ask yourself when writing this section:
-- _Have you thoroughly summarized the entire process you used for this project?_
-- _Were there any interesting aspects of the project?_
-- _Were there any difficult aspects of the project?_
-- _Does the final model and solution fit your expectations for the problem, and should it be used in a general setting to solve these types of problems?_
 
 A large portion of the project's time was put into handling time index, and into making sure all the entries are aligned properly throughout different implementations. While this is really important when handling time sequence data, it is not a critical part of the project. Throwing away time index and treating data as numpy sequence simplify many parts of data handling and data shaping. If the time index is still needed at the end of this project, it can still be re-aligned. This approach is more practical than introducing another data's attribute to training process of the LSTM model.
 
@@ -250,10 +187,6 @@ The LSTM is a very powerful technique, with very minimal setup. More time of the
 And due to the logic of keeping and throwing away "memory" of LSTM, it pushed me to develop domain knowledge in financing and stock trading. Thanks to some basic finance knowledge gained during the project, I was able to realize the limitation of the data when feeding them to LSTM model. While LSTM is great at extracting features out the previous context, timestamp alone does not contain much feature to be extracted and to help with the predicting ability.
 
 ### Improvement
-In this section, you will need to provide discussion as to how one aspect of the implementation you designed could be improved. As an example, consider ways your implementation can be made more general, and what would need to be modified. You do not need to make this improvement, but the potential solutions resulting from these changes are considered and compared/contrasted to your current solution. Questions to ask yourself when writing this section:
-- _Are there further improvements that could be made on the algorithms or techniques you used in this project?_
-- _Were there algorithms or techniques you researched that you did not know how to implement, but would consider using if you knew how?_
-- _If you used your final solution as the new benchmark, do you think an even better solution exists?_
 
 While the result of the project can be skeptical, due to the issues mention in the "Justification" section, there are some aspects that we can implement for future project:
 
@@ -262,17 +195,6 @@ While the result of the project can be skeptical, due to the issues mention in t
 - The prediction can be return in form of price momentum, instead of specific dollar amount. It can help highlighting the potential for the price will go in certain direction, through a probability value instead of dollar value.
 - We can utilize LSTM for evaluating multi-variables, such as finding a correlation between price moment in two or more companies. Time sequence does not show the causal inference to the stock price, because time does not cause the price to change, time only reflect the change of price. Relying time sequence analysist will not yeild a good performance for pricing, as we will know identify the causal connection. But with the way LSTM work by maintaining related features and throwing away un-related features, we can utilize it to process more information's dimension.
 
------------
-
-**Before submitting, ask yourself. . .**
-
-- Does the project report you’ve written follow a well-organized structure similar to that of the project template?
-- Is each section (particularly **Analysis** and **Methodology**) written in a clear, concise and specific fashion? Are there any ambiguous terms or phrases that need clarification?
-- Would the intended audience of your project be able to understand your analysis, methods, and results?
-- Have you properly proof-read your project report to assure there are minimal grammatical and spelling mistakes?
-- Are all the resources used for this project correctly cited and referenced?
-- Is the code that implements your solution easily readable and properly commented?
-- Does the code execute without error and produce results similar to those reported?
 
 ## References:
 
