@@ -127,11 +127,67 @@ In this section, the process for which metrics, algorithms, and techniques that 
 - _Were there any complications with the original metrics or techniques that required changing prior to acquiring a solution?_
 - _Was there any part of the coding process (e.g., writing complicated functions) that should be documented?_
 
+Our main interest is to make sure we have a correct implementation for building the LSTM model. Even though LSTM is fully capable is doing multi-days predictions, the scenario in which the training data is a sequence with each item is of _n-length_, and the model will make a prediction of _n-length_ day into the future. Such scenario can give the model the future-bias, in which the model has hint about the future (in this case: _n1, n2..._) to predict _n0_. Instead, we choose to build our model to predict only 1 day into the future. The input shape that is passed through the LSTM cell is:
+
+```sphinx
+input_shape = (batch_size, timesteps, window_size)`
+`batch_size`: the number of minibatch that is trained at the same time. We use only 1 batch_size be default.
+`timesteps`: number of observations in one interval. We use 4, as observed in the data exploration.
+`window_size`: we use 1 day prediction, as explain above.
+```
+
+The normalization is base on the last known value in previous training windows. For example, if our training data is split into a sequence such as:
+
+```python
+[
+    [v0, v1, v2, v3],   # timestep 1
+    [v1, v2, v3, v4],   # timestep 2
+    [v2, v3, v3, v5],   # timestep 3
+]
+```
+
+`timestep 3` will be normalized base on `v4`, `timestep 2` will be normalized base on `v3`, and `timestep 1` will be normalized base on `v0` as we do not have previous window info.
+
+Another alternative to normalize data, is to use the last known value in _current_ window. So with the example above, `timestep 3` will be normalized base on `v5`. With this approach, when we make our prediction for _day[t]_, previous _day[t-1]_ will also have weight 0, and every other day will scale follows _day[t-1]_. After the normalization, `timestep 2` and `timestep 3` will have very different values even though they only shift one value. We want our model to able to pick the pattern (if any), so we favor the approach of using last known value in _previous_ window, so that we can preserve part of the weight pattern.
+
+The normalization for one timestep is:
+
+```python
+window = [window[i] / previous_window[-1] - 1 for i in range(len(window))]
+```
+
+Consequencely, the formular for denormalize one normalized timestep is:
+
+```python
+window = [(1 + window[i]) * previous_window[-1] for i in range(len(window))]
+```
+
+For convenience, the values of `previous_window[-1]` are save as `normalizers`, for the process of normalizing and denormalizing.
+
+The LSTM model is built with one single LSTM layer with 30 units, and a fully connected layer for output:
+
+```text
+Layer (type)                 Output Shape              Param #
+=================================================================
+lstm_1 (LSTM)               (1, 30)                   3840
+_________________________________________________________________
+dense_1 (Dense)             (1, 1)                    31
+=================================================================
+Total params: 3,871
+Trainable params: 3,871
+Non-trainable params: 0
+_________________________________________________________________
+```
+
 ### Refinement
 In this section, you will need to discuss the process of improvement you made upon the algorithms and techniques you used in your implementation. For example, adjusting parameters for certain models to acquire improved solutions would fall under the refinement category. Your initial and final solutions should be reported, as well as any significant intermediate results as necessary. Questions to ask yourself when writing this section:
 - _Has an initial solution been found and clearly reported?_
 - _Is the process of improvement clearly documented, such as what techniques were used?_
 - _Are intermediate and final solutions clearly reported as the process is improved?_
+
+We attempt to train both stateful LSTM model and stateless LSTM model. Both models converse rather quickly, indicating that the 4-days window is sufficient for LSTM to make prediction base on our data. It can also mean that there is no obvious pattern for the LSTM to discover through 4-days windows.
+
+And since both model can converse really quickly (less than 3 epochs), we decide to add a dropout layer in the LSTM to make the model learn slower and avoid overfitting.
 
 
 ## IV. Results
@@ -144,11 +200,30 @@ In this section, the final model and any supporting qualities should be evaluate
 - _Is the model robust enough for the problem? Do small perturbations (changes) in training data or the input space greatly affect the results?_
 - _Can results found from the model be trusted?_
 
+We expect our naive averaging to perform poorly, due to the simplistic solution, and due to the fact that the model will also regress to the mean. That means most of the time the model will go in the opposite direction of the current price's trend. A visual comparison confirms our expectation:
+
+![Naive Average prediction](naive-guess-compare.png)
+
+We expect the ARIMA model to perform well, as it is currently one of the best method to analyze time sequence data. The ARIMA model perform a little above our expectation. It closely follows the actual price. The margin of error is around 3%-4% ($20, $30 over $700).
+
+![ARIMA prediction](arima-predict-compare.png)
+
+The LSTM model performs equally well to the ARIMA model. Those two models have almost equally comparison on the difference, except that the LSTM model perform not as well as ARIMA when there is a sharp downward trend in the price.
+
+![LSTM prediction](lstm-predictions-compare.png)
+
 ### Justification
 In this section, your model’s final solution and its results should be compared to the benchmark you established earlier in the project using some type of statistical analysis. You should also justify whether these results and the solution are significant enough to have solved the problem posed in the project. Questions to ask yourself when writing this section:
 - _Are the final results found stronger than the benchmark result reported earlier?_
 - _Have you thoroughly analyzed and discussed the final solution?_
 - _Is the final solution significant enough to have solved the problem?_
+
+The result of the performance of the LSTM model shows that it has successfully captured the calculation for the closing price of the next day. While the ARIMA requires some analysist on the data to determine the parameters needed to initialize its model, the LSTM is able to optimize its model with very minimal initial configuration.
+
+However, this result does not mean that we have successfully predicting the future. On the opposite, the overwhelmingly good performance is largely due to some issues:
+
+- The data automatically corrects the model prediction. A wrong prediction on previous days are discarded, and replace with actual data in each prediction.
+- The "pattern" that both ARIMA model and LSTM model use for calculation seems to be just carry on the price of current day onto the next day. This strategy works extremely well for a big and stable company like Google, where it is rarely to have big change in short amount of time such as one day. Also, Google is a very popular company, and is on trading strategy of many big financial firms. Any big price change would likely be put back to market equilibrum by the end of the day.
 
 
 ## V. Conclusion
